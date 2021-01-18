@@ -1,0 +1,52 @@
+### Is_Graph_Bipartite
+
+## Source Code
+
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int vtces = graph.length;
+        int visited[] = new int[vtces];
+        Arrays.fill(visited, -1);
+        for(int i=0;i<vtces;i++){
+            if(visited[i] == -1){
+                boolean is_Bipartite = checkBipartite(visited, graph,i);
+                if(is_Bipartite == false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean checkBipartite(int[] visited, int[][] graph, int src){
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(src, src+"", 0));
+        while(q.size()>0){
+            Pair rem = q.poll();
+            if(visited[rem.v] != -1){
+                if(rem.level != visited[rem.v]){
+                    return false;
+                }
+            }
+            else{
+                visited[rem.v] = rem.level;
+            }
+            for(int edge : graph[rem.v]){
+                if(visited[edge] == -1){
+                    q.add(new Pair(edge, rem.psf+edge, rem.level + 1));
+                }
+            }
+        }
+        return true;
+        
+    }
+}
+class Pair {
+    int v;
+    String psf;
+    int level;
+    Pair(int v, String psf, int level){
+        this.v = v;
+        this.psf = psf;
+        this.level = level;
+    }
+}
